@@ -46,15 +46,17 @@ module.exports = ({
   };
 
   const sendVerificationEmail = ({ link, appName, user }) => {
-    return sendMail({
-      to: user.get("email") || user.get("username"),
-      templateId: verificationEmailTemplate,
-      dynamic_template_data: {
-        link,
-        appName,
-        email: user.get("email") || user.get("username")
-      }
-    });
+    if (user.get("hasInitialPassword") === true) {
+      return sendMail({
+        to: user.get("email") || user.get("username"),
+        templateId: verificationEmailTemplate,
+        dynamic_template_data: {
+          link,
+          appName,
+          email: user.get("email") || user.get("username")
+        }
+      });
+    }
   };
 
   return {
